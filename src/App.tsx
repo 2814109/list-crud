@@ -17,6 +17,7 @@ import {
 import { Button } from "@/components/ui/button";
 
 import "./App.css";
+import { Dispatch, useCallback } from "react";
 
 const invoices = [
   {
@@ -64,6 +65,13 @@ const invoices = [
 ];
 
 function App() {
+  // WIP
+  const handleChange = useCallback(
+    () => (value: string) =>
+      window.alert(`are you change value is ${value} right ?`),
+    []
+  );
+
   return (
     <>
       <Table>
@@ -80,39 +88,49 @@ function App() {
         </TableHeader>
         <TableBody>
           {invoices.map((invoice) => (
-            <Row {...invoice} />
+            <Row invoice={invoice} handleChange={handleChange} />
           ))}
         </TableBody>
       </Table>
     </>
   );
 }
+type Props = {
+  handleChange: Dispatch<string>;
+};
 
-const Row = (invoice: (typeof invoices)[0]) => {
+const Row = ({
+  invoice,
+  handleChange,
+}: {
+  invoice: (typeof invoices)[0];
+} & Props) => {
   return (
     <TableRow key={invoice.invoice}>
       <TableCell className="font-medium">{invoice.invoice}</TableCell>
       <TableCell>{invoice.paymentStatus}</TableCell>
       <TableCell>{invoice.paymentMethod}</TableCell>
       <TableCell className="z-10">
-        <Selector />
+        <Selector handleChange={handleChange} />
       </TableCell>
       <TableCell className="text-right">{invoice.totalAmount}</TableCell>
     </TableRow>
   );
 };
 
-const Selector = () => (
-  <Select>
-    <SelectTrigger className="w-[180px]">
-      <SelectValue placeholder="Theme" />
-    </SelectTrigger>
-    <SelectContent>
-      <SelectItem value="light">Light</SelectItem>
-      <SelectItem value="dark">Dark</SelectItem>
-      <SelectItem value="system">System</SelectItem>
-    </SelectContent>
-  </Select>
-);
+const Selector = ({ handleChange }: Props) => {
+  return (
+    <Select onValueChange={handleChange}>
+      <SelectTrigger className="w-[180px]">
+        <SelectValue placeholder="Theme" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="light">Light</SelectItem>
+        <SelectItem value="dark">Dark</SelectItem>
+        <SelectItem value="system">System</SelectItem>
+      </SelectContent>
+    </Select>
+  );
+};
 
 export default App;
