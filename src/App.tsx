@@ -14,10 +14,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
 
 import "./App.css";
-import { Dispatch, useCallback } from "react";
+import { Dispatch, memo, useCallback } from "react";
 
 const invoices = [
   {
@@ -100,24 +99,26 @@ type Props = {
   handleChange: Dispatch<string>;
 };
 
-const Row = ({
-  invoice,
-  handleChange,
-}: {
-  invoice: (typeof invoices)[0];
-} & Props) => {
-  return (
-    <TableRow key={invoice.invoice}>
-      <TableCell className="font-medium">{invoice.invoice}</TableCell>
-      <TableCell>{invoice.paymentStatus}</TableCell>
-      <TableCell>{invoice.paymentMethod}</TableCell>
-      <TableCell className="z-10">
-        <Selector handleChange={handleChange} />
-      </TableCell>
-      <TableCell className="text-right">{invoice.totalAmount}</TableCell>
-    </TableRow>
-  );
-};
+const Row = memo(
+  ({
+    invoice,
+    handleChange,
+  }: {
+    invoice: (typeof invoices)[0];
+  } & Props) => {
+    return (
+      <TableRow key={invoice.invoice}>
+        <TableCell className="font-medium">{invoice.invoice}</TableCell>
+        <TableCell>{invoice.paymentStatus}</TableCell>
+        <TableCell>{invoice.paymentMethod}</TableCell>
+        <TableCell className="z-10">
+          <Selector handleChange={handleChange} />
+        </TableCell>
+        <TableCell className="text-right">{invoice.totalAmount}</TableCell>
+      </TableRow>
+    );
+  }
+);
 
 const Selector = ({ handleChange }: Props) => {
   return (
