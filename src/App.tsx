@@ -65,10 +65,8 @@ const invoices = [
 ];
 
 function App() {
-  // WIP
   const handleChange = useCallback(
-    () => (value: string) =>
-      window.alert(`are you change value is ${value} right ?`),
+    (id: string) => () => window.alert(`are you change value is ${id} right ?`),
     []
   );
 
@@ -88,7 +86,10 @@ function App() {
         </TableHeader>
         <TableBody>
           {invoices.map((invoice) => (
-            <Row invoice={invoice} handleChange={handleChange} />
+            <Row
+              invoice={invoice}
+              handleChange={handleChange(invoice.invoice)}
+            />
           ))}
         </TableBody>
       </Table>
